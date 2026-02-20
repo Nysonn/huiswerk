@@ -7,14 +7,17 @@
   <link rel="stylesheet" href="/css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <nav class="navbar">
     <div class="nav-content">
-      <h1>Het Huiswerk-Portaal</h1>
+      <h1>🎓 Het Huiswerk-Portaal</h1>
       <div class="nav-right">
-        <span class="user-info">Welcome, <%= user.name %> (<%= user.role %>)</span>
+        <span class="user-info">
+          <strong><%= user.name %></strong>
+          <span style="opacity: 0.7;"> • <%= user.role.charAt(0).toUpperCase() + user.role.slice(1) %></span>
+        </span>
         <a href="/logout" class="btn btn-secondary">Logout</a>
       </div>
     </div>
@@ -24,34 +27,40 @@
     <div class="page-header">
       <div>
         <a href="/classes" class="back-link">← Back to Classes</a>
-        <h2><%= className %> Homework</h2>
+        <h2>📚 <%= className %> Homework</h2>
       </div>
       
       <% if (user.role === 'teacher') { %>
-        <button onclick="showUploadModal()" class="btn btn-primary">Upload Homework</button>
+        <button onclick="showUploadModal()" class="btn btn-primary">+ Upload Homework</button>
       <% } %>
     </div>
     
     <% if (homework.length === 0) { %>
       <div class="empty-state">
-        <p>No homework uploaded yet for this class.</p>
+        <p><strong>No homework assignments yet</strong></p>
         <% if (user.role === 'teacher') { %>
-          <p>Click "Upload Homework" to add homework.</p>
+          <p>Click "Upload Homework" to add an assignment for this class.</p>
+        <% } else { %>
+          <p>Check back later for new assignments from your teachers.</p>
         <% } %>
       </div>
     <% } else { %>
       <div class="homework-list">
-        <% homework.forEach(hw => { %>
+        <% homework.forEach((hw, index) => { %>
           <div class="homework-item">
             <div class="homework-info">
-              <h3><%= hw.title %></h3>
+              <h3>📄 <%= hw.title %></h3>
               <p class="homework-meta">
-                Uploaded by: <%= hw.uploaded_by_name || 'Unknown' %> | 
-                Date: <%= new Date(hw.created_at).toLocaleDateString() %>
+                <span>👤 Uploaded by: <strong><%= hw.uploaded_by_name || 'Unknown' %></strong></span>
+                <span>📅 Date: <strong><%= new Date(hw.created_at).toLocaleDateString('en-GB', { 
+                  day: 'numeric', 
+                  month: 'short', 
+                  year: 'numeric' 
+                }) %></strong></span>
               </p>
             </div>
             <a href="<%= hw.file_url %>" target="_blank" class="btn btn-primary" download>
-              Download
+              ⬇️ Download
             </a>
           </div>
         <% }) %>
@@ -63,23 +72,37 @@
   <div id="uploadModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeUploadModal()">&times;</span>
-      <h2>Upload Homework</h2>
+      <h2>📤 Upload Homework</h2>
       
-      <form action="/classes/<%= encodeURIComponent(className) %>/upload" method="POST" enctype="multipart/form-data">
+      <form action="/classes/<%= encodeURIComponent(className) %>/upload" method="POST" enctype="multipart/form-data" id="uploadForm">
         <div class="form-group">
-          <label for="title">Homework Title</label>
-          <input type="text" id="title" name="title" required placeholder="e.g., Math Assignment Week 5">
+          <label for="title">Assignment Title</label>
+          <input 
+            type="text" 
+            id="title" 
+            name="title" 
+            required 
+            placeholder="e.g., Math Assignment Week 5"
+            autocomplete="off"
+          >
         </div>
         
         <div class="form-group">
           <label for="homework">Upload File</label>
-          <input type="file" id="homework" name="homework" required accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-          <small>Supported formats: PDF, DOC, DOCX, JPG, PNG</small>
+          <input 
+            type="file" 
+            id="homework" 
+            name="homework" 
+            required 
+            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+            onchange="updateFileName()"
+          >
+          <small>📎 Supported formats: PDF, DOC, DOCX, JPG, PNG (Max 10MB)</small>
         </div>
         
         <div class="modal-actions">
           <button type="button" onclick="closeUploadModal()" class="btn btn-secondary">Cancel</button>
-          <button type="submit" class="btn btn-primary">Upload</button>
+          <button type="submit" class="btn btn-primary">Upload Assignment</button>
         </div>
       </form>
     </div>
@@ -88,10 +111,20 @@
   <script>
     function showUploadModal() {
       document.getElementById('uploadModal').style.display = 'block';
+      document.body.style.overflow = 'hidden';
     }
     
     function closeUploadModal() {
       document.getElementById('uploadModal').style.display = 'none';
+      document.body.style.overflow = 'auto';
+      document.getElementById('uploadForm').reset();
+    }
+    
+    function updateFileName() {
+      const input = document.getElementById('homework');
+      if (input.files.length > 0) {
+        console.log('Selected file:', input.files[0].name);
+      }
     }
     
     window.onclick = function(event) {
@@ -100,6 +133,13 @@
         closeUploadModal();
       }
     }
+    
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeUploadModal();
+      }
+    });
   </script>
   <% } %>
 </body>

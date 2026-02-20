@@ -7,51 +7,76 @@
   <link rel="stylesheet" href="/css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
     <div class="auth-box">
       <div class="logo">
-        <h1>Het Huiswerk-Portaal</h1>
+        <h1>🎓 Het Huiswerk-Portaal</h1>
         <p>Homework Portal for Uganda Schools</p>
       </div>
       
       <form action="/register" method="POST" class="auth-form">
-        <h2>Register</h2>
+        <h2>Create Account</h2>
         
         <% if (error) { %>
-          <div class="error-message"><%= error %></div>
+          <div class="error-message">
+            <strong>⚠️ Error:</strong> <%= error %>
+          </div>
         <% } %>
         
         <div class="form-group">
           <label for="name">Full Name</label>
-          <input type="text" id="name" name="name" required>
+          <input 
+            type="text" 
+            id="name" 
+            name="name" 
+            placeholder="Enter your full name"
+            required
+            autocomplete="name"
+          >
         </div>
         
         <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required>
+          <label for="email">Email Address</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            placeholder="Enter your email"
+            required
+            autocomplete="email"
+          >
         </div>
         
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" name="password" required minlength="6">
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            placeholder="Create a password (min. 6 characters)"
+            required 
+            minlength="6"
+            autocomplete="new-password"
+          >
+          <small>Password must be at least 6 characters long</small>
         </div>
         
         <div class="form-group">
           <label for="role">Role</label>
           <select id="role" name="role" required onchange="toggleClassSelect()">
-            <option value="">Select Role</option>
+            <option value="">Select your role</option>
             <option value="teacher">Teacher</option>
             <option value="student">Student</option>
           </select>
         </div>
         
         <div class="form-group" id="classGroup" style="display: none;">
-          <label for="class">Class</label>
+          <label for="class">Class <span style="color: #C62828;">*</span></label>
           <select id="class" name="class">
-            <option value="">Select Class</option>
+            <option value="">Select your class</option>
             <option value="Primary 1">Primary 1</option>
             <option value="Primary 2">Primary 2</option>
             <option value="Primary 3">Primary 3</option>
@@ -60,12 +85,13 @@
             <option value="Primary 6">Primary 6</option>
             <option value="Primary 7">Primary 7</option>
           </select>
+          <small>Required for students only</small>
         </div>
         
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary">Create Account</button>
         
         <p class="auth-link">
-          Already have an account? <a href="/login">Login here</a>
+          Already have an account? <a href="/login">Sign in here</a>
         </p>
       </form>
     </div>

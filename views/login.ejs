@@ -7,37 +7,53 @@
   <link rel="stylesheet" href="/css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
     <div class="auth-box">
       <div class="logo">
-        <h1>Het Huiswerk-Portaal</h1>
+        <h1>🎓 Het Huiswerk-Portaal</h1>
         <p>Homework Portal for Uganda Schools</p>
       </div>
       
       <form action="/login" method="POST" class="auth-form">
-        <h2>Login</h2>
+        <h2>Welcome Back</h2>
         
         <% if (error) { %>
-          <div class="error-message"><%= error %></div>
+          <div class="error-message">
+            <strong>⚠️ Error:</strong> <%= error %>
+          </div>
         <% } %>
         
         <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required>
+          <label for="email">Email Address</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            placeholder="Enter your email"
+            required 
+            autocomplete="email"
+          >
         </div>
         
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" name="password" required>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            placeholder="Enter your password"
+            required
+            autocomplete="current-password"
+          >
         </div>
         
-        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" class="btn btn-primary">Sign In</button>
         
         <p class="auth-link">
-          Don't have an account? <a href="/register">Register here</a>
+          Don't have an account? <a href="/register">Create one now</a>
         </p>
       </form>
     </div>

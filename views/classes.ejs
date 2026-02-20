@@ -7,14 +7,17 @@
   <link rel="stylesheet" href="/css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <nav class="navbar">
     <div class="nav-content">
-      <h1>Het Huiswerk-Portaal</h1>
+      <h1>🎓 Het Huiswerk-Portaal</h1>
       <div class="nav-right">
-        <span class="user-info">Welcome, <%= user.name %> (<%= user.role %>)</span>
+        <span class="user-info">
+          <strong><%= user.name %></strong>
+          <span style="opacity: 0.7;"> • <%= user.role.charAt(0).toUpperCase() + user.role.slice(1) %></span>
+        </span>
         <a href="/logout" class="btn btn-secondary">Logout</a>
       </div>
     </div>
@@ -22,16 +25,19 @@
   
   <div class="container main-content">
     <div class="classes-header">
-      <h2>Select a Class</h2>
-      <p>Choose a class to view or upload homework</p>
+      <h2>📚 Your Classes</h2>
+      <p>Choose a class to view or upload homework assignments</p>
     </div>
     
     <div class="classes-grid">
-      <% classes.forEach(className => { %>
+      <% classes.forEach((className, index) => { 
+        const icons = ['📘', '📗', '📙', '📕', '📓', '📔', '📖'];
+        const icon = icons[index % icons.length];
+      %>
         <a href="/classes/<%= encodeURIComponent(className) %>" class="class-card">
-          <div class="class-icon">📚</div>
+          <div class="class-icon"><%= icon %></div>
           <h3><%= className %></h3>
-          <p>View homework</p>
+          <p>View homework assignments</p>
         </a>
       <% }) %>
     </div>
