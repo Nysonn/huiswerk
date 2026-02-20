@@ -63,6 +63,12 @@ app.get('/', (req: Request, res: Response) => {
   res.redirect('/login');
 });
 
+// 404 handler
+app.use((req: Request, res: Response) => {
+  console.log('404 - Route not found:', req.method, req.path);
+  res.status(404).send(`Route not found: ${req.method} ${req.path}`);
+});
+
 // Initialize database and start server
 const startServer = async () => {
   try {
