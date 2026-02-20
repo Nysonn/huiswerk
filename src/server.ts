@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
-import path from 'path';
+import * as path from 'path';
 import dotenv from 'dotenv';
 import pool from './config/database';
 import initDatabase from './config/init-db';

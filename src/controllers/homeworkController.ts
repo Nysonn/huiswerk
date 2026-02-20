@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { createHomework, getHomeworkByClass } from '../models/Homework';
 import cloudinary from '../config/cloudinary';
 import { UploadApiResponse } from 'cloudinary';
+import { Readable } from 'stream';
 
 const CLASSES = ['Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6', 'Primary 7'];
 
@@ -56,7 +57,9 @@ export const uploadHomework = async (req: Request, res: Response) => {
           else resolve(result as UploadApiResponse);
         }
       );
-      uploadStream.end(file.buffer);
+      
+      // Convert buffer to stream and pipe it to upload stream
+      Readable.from(file.buffer).pipe(uploadStream);
     });
 
     // Save to database
