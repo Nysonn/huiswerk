@@ -1,0 +1,36 @@
+{
+  "name": "het-huiswerk-portaal",
+  "version": "1.0.0",
+  "description": "Homework portal for schools in Uganda",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "start": "node dist/server.js"
+  },
+  "keywords": ["homework", "education", "uganda"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "ejs": "^3.1.9",
+    "pg": "^8.11.3",
+    "bcrypt": "^5.1.1",
+    "express-session": "^1.17.3",
+    "connect-pg-simple": "^9.0.1",
+    "cloudinary": "^1.41.0",
+    "multer": "^1.4.5-lts.1",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.20",
+    "@types/node": "^20.9.0",
+    "@types/ejs": "^3.1.5",
+    "@types/pg": "^8.10.9",
+    "@types/bcrypt": "^5.0.2",
+    "@types/express-session": "^1.17.10",
+    "@types/multer": "^1.4.10",
+    "typescript": "^5.2.2",
+    "ts-node-dev": "^2.0.0"
+  }
+}

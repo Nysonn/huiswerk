@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= className %> - Het Huiswerk-Portaal</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-content">
+      <h1>Het Huiswerk-Portaal</h1>
+      <div class="nav-right">
+        <span class="user-info">Welcome, <%= user.name %> (<%= user.role %>)</span>
+        <a href="/logout" class="btn btn-secondary">Logout</a>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="container main-content">
+    <div class="page-header">
+      <div>
+        <a href="/classes" class="back-link">← Back to Classes</a>
+        <h2><%= className %> Homework</h2>
+      </div>
+      
+      <% if (user.role === 'teacher') { %>
+        <button onclick="showUploadModal()" class="btn btn-primary">Upload Homework</button>
+      <% } %>
+    </div>
+    
+    <% if (homework.length === 0) { %>
+      <div class="empty-state">
+        <p>No homework uploaded yet for this class.</p>
+        <% if (user.role === 'teacher') { %>
+          <p>Click "Upload Homework" to add homework.</p>
+        <% } %>
+      </div>
+    <% } else { %>
+      <div class="homework-list">
+        <% homework.forEach(hw => { %>
+          <div class="homework-item">
+            <div class="homework-info">
+              <h3><%= hw.title %></h3>
+              <p class="homework-meta">
+                Uploaded by: <%= hw.uploaded_by_name || 'Unknown' %> | 
+                Date: <%= new Date(hw.created_at).toLocaleDateString() %>
+              </p>
+            </div>
+            <a href="<%= hw.file_url %>" target="_blank" class="btn btn-primary" download>
+              Download
+            </a>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+  
+  <% if (user.role === 'teacher') { %>
+  <div id="uploadModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeUploadModal()">&times;</span>
+      <h2>Upload Homework</h2>
+      
+      <form action="/classes/<%= encodeURIComponent(className) %>/upload" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="title">Homework Title</label>
+          <input type="text" id="title" name="title" required placeholder="e.g., Math Assignment Week 5">
+        </div>
+        
+        <div class="form-group">
+          <label for="homework">Upload File</label>
+          <input type="file" id="homework" name="homework" required accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+          <small>Supported formats: PDF, DOC, DOCX, JPG, PNG</small>
+        </div>
+        
+        <div class="modal-actions">
+          <button type="button" onclick="closeUploadModal()" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Upload</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    function showUploadModal() {
+      document.getElementById('uploadModal').style.display = 'block';
+    }
+    
+    function closeUploadModal() {
+      document.getElementById('uploadModal').style.display = 'none';
+    }
+    
+    window.onclick = function(event) {
+      const modal = document.getElementById('uploadModal');
+      if (event.target == modal) {
+        closeUploadModal();
+      }
+    }
+  </script>
+  <% } %>
+</body>
+</html>
